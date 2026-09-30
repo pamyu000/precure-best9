@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>私のお気に入りプリキュア9選</title>
+  <style>
+    :root {
+      --bg-color: #fff0f5;
+      --card-bg: #ffffff;
+      --accent-color: #ff69b4;
+      --text-color: #333;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: var(--accent-color);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 3px solid #ffb6c1;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: grab;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      user-select: none;
+    }
+
+    .card:active {
+      cursor: grabbing;
+    }
+
+    .card.dragging {
+      opacity: 0.5;
+      transform: scale(0.95);
+    }
+
+    .rank-badge {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      background-color: var(--accent-color);
+      color: white;
+      font-weight: bold;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .img-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 8px;
+      background-color: #f0f0f0;
+    }
+
+    .img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .character-name {
+      margin-top: 8px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      text-align: center;
+      border: none;
+      background: transparent;
+      width: 100%;
+      color: var(--text-color);
+    }
+
+    .character-name:focus {
+      outline: 1px solid var(--accent-color);
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>私のお気に入りプリキュア9選</h1>
+  <p class="subtitle">ドラッグ＆ドロップで順位を並び替えられます</p>
+
+  <div class="grid-container" id="grid">
+    <!-- 9つのカード -->
+    <!-- src="画像ファイル名" をお手元の画像名に変更してください -->
+    <div class="card" draggable="true">
+      <div class="rank-badge">1</div>
+      <div class="img-wrapper"><img src="precure1.jpg" alt="1位"></div>
+      <input type="text" class="character-name" value="キャラ名1" />
+    </div>
+
+    <div class="card" draggable="true">
+      <div class="rank-badge">2</div>
+      <div class="img-wrapper"><img src="precure2.jpg" alt="2位"></div>
+      <input type="text" class="character-name" value="キャラ名2" />
+    </div>
+
+    <div class="card" draggable="true">
+      <div class="rank-badge">3</div>
+      <div class="img-wrapper"><img src="precure3.jpg" alt="3位"></div>
+      <input type="text" class="character-name" value="キャラ名3" />
+    </div>
+
+    <div class="card" draggable="true">
+      <div class="rank-badge">4</div>
+      <div class="img-wrapper"><img src="precure4.jpg" alt="4位"></div>
+      <input type="text" class="character-name" value="キャラ名4" />
+    </div>
+
+    <div class="card" draggable="true">
+      <div class="rank-badge">5</div>
+      <div class="img-wrapper"><img src="precure5.jpg" alt="5位"></div>
+      <input type="text" class="character-name" value="キャラ名5" />
+    </div>
+
+    <div class="card" draggable="true">
+      <div class="rank-badge">6</div>
+      <div class="img-wrapper"><img src="precure6.jpg" alt="6位"></div>
+      <input type="text" class="character-name" value="キャラ名6" />
+    </div>
+
+    <div class="card" draggable="true">
+      <div class="rank-badge">7</div>
+      <div class="img-wrapper"><img src="precure7.jpg" alt="7位"></div>
+      <input type="text" class="character-name" value="キャラ名7" />
+    </div>
+
+    <div class="card" draggable="true">
+      <div class="rank-badge">8</div>
+      <div class="img-wrapper"><img src="precure8.jpg" alt="8位"></div>
+      <input type="text" class="character-name" value="キャラ名8" />
+    </div>
+
+    <div class="card" draggable="true">
+      <div class="rank-badge">9</div>
+      <div class="img-wrapper"><img src="precure9.jpg" alt="9位"></div>
+      <input type="text" class="character-name" value="キャラ名9" />
+    </div>
+  </div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    let draggedItem = null;
+
+    grid.addEventListener('dragstart', (e) => {
+      if (e.target.classList.contains('card')) {
+        draggedItem = e.target;
+        e.target.classList.add('dragging');
+      }
+    });
+
+    grid.addEventListener('dragend', (e) => {
+      if (e.target.classList.contains('card')) {
+        e.target.classList.remove('dragging');
+        draggedItem = null;
+        updateRanks();
+      }
+    });
+
+    grid.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const afterElement = getDragAfterElement(grid, e.clientX, e.clientY);
+      if (afterElement == null) {
+        grid.appendChild(draggedItem);
+      } else {
+        grid.insertBefore(draggedItem, afterElement);
+      }
+    });
+
+    function getDragAfterElement(container, x, y) {
+      const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')];
+
+      return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offsetX = x - box.left - box.width / 2;
+        const offsetY = y - box.top - box.height / 2;
+        const d = Math.hypot(offsetX, offsetY);
+
+        if (d < closest.offset) {
+          return { offset: d, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.POSITIVE_INFINITY }).element;
+    }
+
+    function updateRanks() {
+      const cards = grid.querySelectorAll('.card');
+      cards.forEach((card, index) => {
+        const badge = card.querySelector('.rank-badge');
+        badge.textContent = index + 1;
+      });
+    }
+  </script>
+</body>
+</html>
